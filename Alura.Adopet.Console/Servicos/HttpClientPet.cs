@@ -5,8 +5,9 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using Alura.Adopet.Console.Modelos;
 
-namespace Alura.Adopet.Console
+namespace Alura.Adopet.Console.Servicos
 {
     public class HttpClientPet
     {
@@ -14,7 +15,7 @@ namespace Alura.Adopet.Console
 
         public HttpClientPet()
         {
-            this.client = ConfiguraHttpClient("http://localhost:5057");
+            client = ConfiguraHttpClient("http://localhost:5057");
         }
 
         HttpClient ConfiguraHttpClient(string url)

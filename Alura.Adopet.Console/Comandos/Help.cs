@@ -5,11 +5,11 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Alura.Adopet.Console
+namespace Alura.Adopet.Console.Comandos
 {
     [DocComando(instrucao: "help",
     documentacao: " adopet help <parametro> ous simplemente adopet help comando que exibe informações de ajuda dos comandos.")]
-    internal class Help
+    internal class Help : IComando
     {
         private Dictionary<string, DocComando> docs;
         public Help()
@@ -19,7 +19,14 @@ namespace Alura.Adopet.Console
                 .Select(t => t.GetCustomAttribute<DocComando>()!)
                 .ToDictionary(d => d.Instrucao);
         }
-        public void ExibirDocumentacao(string[] comandoAjuda)
+
+        public Task ExecutarAsync(string[] args)
+        {
+            this.ExibirDocumentacao(args);
+            return Task.CompletedTask;
+        }
+
+        private void ExibirDocumentacao(string[] comandoAjuda)
         {
             System.Console.WriteLine("Lista de comandos.");
             // se não passou mais nenhum argumento mostra help de todos os comandos

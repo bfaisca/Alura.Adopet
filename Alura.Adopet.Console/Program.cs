@@ -1,34 +1,23 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using Alura.Adopet.Console;
+using Alura.Adopet.Console.Comandos;
 
 Console.ForegroundColor = ConsoleColor.Green;
+Dictionary<string, IComando> comandosDoSistema = new()
+{
+    { "import",new Import()},
+    { "help",new Help()},
+    { "show",new Show()},
+    { "list",new List()}
+};
 try
 {
-    // args[0] é o comando a ser executado pelo programa
-    switch (args[0].Trim())
+    string comandoEscolhido = args[0].Trim();
+    if (comandosDoSistema.ContainsKey(comandoEscolhido))
     {
-        case "import":
-            var import = new Import();
-            await import.ImportacaoArquivoPetAsync(caminhoArquivoImportacao:args[1]);
-            break;
-        case "help":
-           var help = new Help();
-            help.ExibirDocumentacao(comandoAjuda: args);
-            break;
-        case "show":
-            // args[1] é o caminho do arquivo a ser exibido
-            var show = new Show();
-            show.MostrarInformacoesArquivo(caminhoArquivoImportacao: args[1]);
-            break;
-        case "list":
-           var list = new List();
-            await list.ListarDadosBanco();
-            break;
-        default:
-            // exibe mensagem de comando inválido
-            Console.WriteLine("Comando inválido!");
-            break;
+        IComando? cmd = comandosDoSistema[comandoEscolhido];
+        await cmd.ExecutarAsync(args);
     }
 }
 catch (Exception ex)
