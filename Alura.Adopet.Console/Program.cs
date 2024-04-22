@@ -4,25 +4,18 @@ using Alura.Adopet.Console;
 using Alura.Adopet.Console.Comandos;
 
 Console.ForegroundColor = ConsoleColor.Green;
-Dictionary<string, IComando> comandosDoSistema = new()
-{
-    { "import",new Import()},
-    { "help",new Help()},
-    { "show",new Show()},
-    { "list",new List()}
-};
+
 try
 {
-    string comandoEscolhido = args[0].Trim();
-    if (comandosDoSistema.ContainsKey(comandoEscolhido))
-    {
-        IComando? cmd = comandosDoSistema[comandoEscolhido];
-        await cmd.ExecutarAsync(args);
-    }
+    ComandosDoSistema comandos = new();
+    string comando = args[0].Trim();
+    IComando? cmd = comandos[comando];
+
+    if (cmd is not null) await cmd.ExecutarAsync(args);
+    else Console.WriteLine("Comando inválido!");
 }
 catch (Exception ex)
 {
-    // mostra a exceção em vermelho
     Console.ForegroundColor = ConsoleColor.Red;
     Console.WriteLine($"Aconteceu um exceção: {ex.Message}");
 }
